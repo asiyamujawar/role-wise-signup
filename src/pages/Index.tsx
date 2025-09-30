@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
-import { Shield, LogOut, User } from "lucide-react";
+import { Shield } from "lucide-react";
 
 const Index = () => {
   const [user, setUser] = useState<any>(null);
@@ -13,14 +13,13 @@ const Index = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
 
+  // Fetch session and user profile
   useEffect(() => {
-    // Check current session
-    const checkSession = async () => {
+    const fetchSessionAndProfile = async () => {
       const { data: { session } } = await supabase.auth.getSession();
       setUser(session?.user ?? null);
-      
+
       if (session?.user) {
-        // Fetch user profile
         const { data: profile } = await supabase
           .from('users')
           .select('*')
@@ -31,29 +30,34 @@ const Index = () => {
       setIsLoading(false);
     };
 
-    // Listen for auth changes
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      async (event, session) => {
-        setUser(session?.user ?? null);
-        
-        if (session?.user) {
-          const { data: profile } = await supabase
-            .from('users')
-            .select('*')
-            .eq('id', session.user.id)
-            .single();
-          setUserProfile(profile);
-        } else {
-          setUserProfile(null);
-        }
-        setIsLoading(false);
-      }
-    );
+    fetchSessionAndProfile();
 
-    checkSession();
+    // Listen for auth changes
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
+      setUser(session?.user ?? null);
+
+      if (session?.user) {
+        const { data: profile } = await supabase
+          .from('users')
+          .select('*')
+          .eq('id', session.user.id)
+          .single();
+        setUserProfile(profile);
+      } else {
+        setUserProfile(null);
+      }
+      setIsLoading(false);
+    });
 
     return () => subscription.unsubscribe();
   }, []);
+
+  // Redirect if logged in
+  useEffect(() => {
+    if (user && userProfile) {
+      navigate('/dashboard');
+    }
+  }, [user, userProfile, navigate]);
 
   const handleLogout = async () => {
     const { error } = await supabase.auth.signOut();
@@ -62,8 +66,8 @@ const Index = () => {
         title: "Logout Error",
         description: error.message,
         variant: "destructive",
-        navigate('/');
       });
+      navigate('/');
     } else {
       toast({
         title: "Logged Out",
@@ -92,12 +96,6 @@ const Index = () => {
         </div>
       </div>
     );
-  }
-
-  if (user && userProfile) {
-    // Redirect to dashboard if user is logged in
-    navigate('/dashboard');
-    return null;
   }
 
   return (
