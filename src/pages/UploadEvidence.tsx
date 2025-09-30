@@ -6,7 +6,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
-import { Shield, ArrowLeft, Upload, FileText, Clock, AlertTriangle } from "lucide-react";
+import { Shield, ArrowLeft, Upload, FileText, Clock, TriangleAlert as AlertTriangle } from "lucide-react";
 import { Tables } from "@/integrations/supabase/types";
 
 type Evidence = Tables<'evidences'>;

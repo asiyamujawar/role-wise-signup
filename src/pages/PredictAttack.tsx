@@ -5,7 +5,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
-import { Shield, ArrowLeft, Target, Zap, AlertTriangle, CheckCircle, XCircle, Brain } from "lucide-react";
+import { Shield, ArrowLeft, Target, Zap, TriangleAlert as AlertTriangle, CircleCheck as CheckCircle, Circle as XCircle, Brain } from "lucide-react";
 
 interface PredictionResult {
   id: string;
