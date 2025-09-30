@@ -4,6 +4,9 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
+import Dashboard from "./pages/Dashboard";
+import UploadEvidence from "./pages/UploadEvidence";
+import PredictAttack from "./pages/PredictAttack";
 import Signup from "./pages/Signup";
 import Login from "./pages/Login";
 import NotFound from "./pages/NotFound";
@@ -18,6 +21,9 @@ const App = () => (
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Index />} />
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/upload-evidence" element={<UploadEvidence />} />
+          <Route path="/predict-attack" element={<PredictAttack />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/login" element={<Login />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}

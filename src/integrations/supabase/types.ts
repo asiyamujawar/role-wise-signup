@@ -14,6 +14,47 @@ export type Database = {
   }
   public: {
     Tables: {
+      evidences: {
+        Row: {
+          cid: string
+          created_at: string | null
+          criticality: Database["public"]["Enums"]["criticality_level"]
+          file_name: string
+          file_type: string
+          id: string
+          upload_time: string | null
+          user_id: string
+        }
+        Insert: {
+          cid: string
+          created_at?: string | null
+          criticality?: Database["public"]["Enums"]["criticality_level"]
+          file_name: string
+          file_type: string
+          id?: string
+          upload_time?: string | null
+          user_id: string
+        }
+        Update: {
+          cid?: string
+          created_at?: string | null
+          criticality?: Database["public"]["Enums"]["criticality_level"]
+          file_name?: string
+          file_type?: string
+          id?: string
+          upload_time?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "evidences_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       users: {
         Row: {
           created_at: string | null
@@ -55,6 +96,7 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
+      criticality_level: "low" | "medium" | "high"
       user_role: "personnel" | "veteran" | "family" | "civilian"
     }
     CompositeTypes: {
@@ -183,6 +225,7 @@ export type CompositeTypes<
 export const Constants = {
   public: {
     Enums: {
+      criticality_level: ["low", "medium", "high"],
       user_role: ["personnel", "veteran", "family", "civilian"],
     },
   },
